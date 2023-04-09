@@ -1,441 +1,513 @@
-<link rel="stylesheet" href="fonts/Font-Awesome-4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="bulma/css/bulma.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <html>
+        <header>
+        <link rel="stylesheet" href="fonts/Font-Awesome-4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="bulma/css/bulma.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<style>
-    @font-face {
-        font-family: Circular;
-        src: url(fonts/CircularXXWeb-Medium.woff2);
-    }
+        <style>
+            @font-face {
+                font-family: AvenirLTStd;
+                src: url(fonts/AvenirLTStd-Medium.otf);
+            }
 
-    @font-face {
-        font-family: 'FontAwesome';
-        src: url(fonts/fontawesome-webfont.woff2);
-        font-weight: normal;
-        font-style: normal;
-    }
+            @font-face {
+                font-family: 'FontAwesome';
+                src: url(fonts/fontawesome-webfont.woff2);
+                font-weight: normal;
+                font-style: normal;
+            }
 
-    body {
-        margin: 0px !important;
-        font-family: Circular;
-    }
+            .draggable {
+                -webkit-user-select: none;
+                user-select: none;
+                -webkit-app-region: drag;
+            }
 
-    .tabcontent {
-        display: none;
-    }
+            .non-draggable, input, button{
+                -webkit-user-select: auto!important;
+                user-select:auto!important;                
+                -webkit-app-region: no-drag!important;
+            }
 
-    .tabcontent.active {
-        display: block !important;
-    }
 
-    .tabcontent table {
-        width: 100%;
-    }
+            ::-webkit-scrollbar {
+                display: none;
+            }    
 
-    .tabcontent td {
-        vertical-align: middle;
-    }
+            html {
+                scrollbar-width: none!important;
+            }
 
-    .tah-250 {
-        height: 250px;
-    }
+            body {
+                margin: 0px !important;
+                font-family: AvenirLTStd;
+            }
+            
+            input, textarea, select{
+                font-family: AvenirLTStd;
+            }
 
-    .tah-300 {
-        height: 300px;
-    }
+            body {
+                overflow-x: hidden!important;
+            }    
 
-    .tah-400 {
-        height: 400px;
-    }
+            .tabcontent {
+                display: none;
+            }
 
-    .tah-500 {
-        height: 500px;
-    }
+            .tabcontent.active {
+                display: block !important;
+            }
 
-    .notification-panel {
-        position: fixed;
-        width: 90%;
-        top: 5px;
-        left: 5px;
-        z-index: 99999999;
-    }
+            .tabcontent table {
+                width: calc(100% - 20px);
+            }
 
-    .notification-border {
-        border: 0px solid lightgray;
-    }
+            .tabcontent td {
+                vertical-align: middle;
+            }
 
-    .label{
-        font-weight: 400!important;
-    }
-</style>
-<div id="divNotification" class="notification-panel">
+            .tah-250 {
+                height: 250px;
+            }
 
-</div>
-<div id="appDialog" class="p-2">
+            .tah-300 {
+                height: 300px;
+            }
 
-    <div class="tabs is-boxed tab-container">
-        <ul>
-            <li class="tab is-active">
-                <a>
-                    <i class="fa fa-pencil pr-2" aria-hidden="true"></i>
-                    <span>Writer</span>
-                </a>
-            </li>
-            <li class="tab">
-                <a>
-                    <i class="fa fa-sliders pr-2" aria-hidden="true"></i>
-                    <span>Settings</span>
-                </a>
-            </li>
-        </ul>
-    </div>
+            .tah-400 {
+                height: 400px;
+            }
 
-    <div class="tabcontent-container">
-        <div class="tabcontent active">
-            <table class="">
-                <tr>
-                    <td style="width: 15%" class=""><label for="txtPrompt" class="label m-1">Template:</label></td>
-                    <td><select class="input m-1" id="txtTemplateSelected"></select></td>
-                </tr>
-                <tr>
-                    <td><label for="txtPrompt" class="label m-1">Prompt:</label></td>
-                    <td><textarea class="textarea m-1 tah-250" id="txtPrompt" row="25" type="text"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="txtOutput" class="label m-1">Output:</label></td>
-                    <td><textarea class="textarea m-2 tah-250" id="txtOutput" row="20" type="text"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <button style="float:left" id="btnGenerate" class="button is-primary ml-1 mr-1">
-                            <i class="fa fa-magic mr-1" aria-hidden="true"></i>
-                            <span>Summon the Wizard</span>
-                        </button>
-                        <button style="float:left" id="btnClipboard" class="button is-primary ml-1 mr-1">
-                            <i class="fa fa-clipboard mr-1" aria-hidden="true"></i>
-                            <span>Copy to Clipboard </span>
-                        </button>
-                        <button style="float:left" id="btnClipboardClose" class="button is-primary ml-1 mr-1">
-                            <i class="fa fa-clipboard mr-1" aria-hidden="true"></i>
-                            Copy to Clipboard & Close </span>
-                        </button>
-                        <button style="float:right" id="btnClose" class="button is-danger ml-1 mr-1">
-                            <i class="fa fa-minus mr-1" aria-hidden="true"></i>
-                            <span>Hide </span>
-                        </button>
+            .tah-500 {
+                height: 500px;
+            }
 
-                    </td>
-                </tr>
-            </table>
+            .notification-panel {
+                position: fixed;
+                width: 90%;
+                top: 5px;
+                left: 5px;
+                z-index: 99999999;
+                opacity: 0.8;
+            }
+
+            .notification-border {
+                border: 0px solid lightgray;
+            }
+
+            .label{
+                font-weight: 400!important;
+            }
+
+            .theme-background-color{
+                background-color: #B2E0DE;
+            }
+
+            .theme-background-color-contrast{
+                background-color: white;
+            }
+            .tabcontent-container{
+                border-left: 1px solid #DBDBDB;
+            }
+
+            .tabs{
+                margin-bottom: 0px!important;
+            }
+
+        </style>
+    </header>
+    <body>
+        <div id="divNotification" class="notification-panel pl-3 pt-3">
+
         </div>
-        <div class="tabcontent">
-            <table class="">
-                <tr>
-                    <td style="width: 20%">
-                        <label for="txtTemplate" class="label  m-1">Templates:</label>
+        <div id="appDialog" class="theme-background-color pb-2">
 
-                    </td>
-                    <td>
-                        <textarea class="textarea m-1 tah-400" id="txtTemplate" row="15" type="text"></textarea>
-                        <div class="pt-1 pb-2">Use ## to start a new template and use {{content}} for content from clipboard</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="txtSecretKey" class="label  m-1">Secret Key:</label></td>
-                    <td><input type="text" id="txtSecretKey" class="input m-1" /></td>
-                </tr>
-                <tr>
-                    <td><label for="txtModel" class="label  m-1">Model:</label></td>
-                    <td><input type="text" id="txtModel" value="gpt-3.5-turbo" class="input m-1" /></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <button id="jkt_btnSave" class="button is-primary">
-                            <i class="fa fa-floppy-o mr-1" aria-hidden="true"></i>
-                            Save
-                        </button>
-                    </td>
-                </tr>
-            </table>
+            <div class="tabs is-boxed tab-container ml-2 pt-2 draggable theme-background-color" >
+                <ul>
+                    <li class="tab is-active non-draggable">
+                        <a>
+                            <i class="fa fa-pencil pr-2" aria-hidden="true"></i>
+                            <span>Writer</span>
+                        </a>
+                    </li>
+                    <li class="tab non-draggable">
+                        <a>
+                            <i class="fa fa-sliders pr-2" aria-hidden="true"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tabcontent-container ml-2 mr-2 pb-2 theme-background-color-contrast" >
+                <div class="tabcontent active">
+                    <table class="">
+                        <tr>
+                            <td class="draggable" style="width:17%">
+                                <i class="fa fa-bookmark-o pl-3 pr-2" aria-hidden="true"></i>
+                                <span class="">Template:</span>
+                            </td>
+                            <td>
+                                <div class="m-2">
+                                    <div class="select ">
+                                        <select class="" id="txtTemplateSelected"></select>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="draggable">
+                                <i class="fa fa-commenting pl-3 pr-2" aria-hidden="true"></i>
+                                <span class="">Prompt:</span>
+                            </td>
+                            <td><textarea class="textarea  m-2  tah-250" id="txtPrompt" row="25" type="text"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="draggable">
+                                <i class="fa fa-thumbs-o-up pl-3 pr-2" aria-hidden="true"></i>
+                                <span class="">Output:</span>
+                            </td>
+                            <td><textarea class="textarea m-2 tah-250" id="txtOutput" row="20" type="text"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="draggable">
+                                <button style="float:left" id="btnGenerate" class="button is-primary ml-3 mr-1 is-size-7">
+                                    <i class="fa fa-magic mr-1" aria-hidden="true"></i>
+                                    <span>Summon the Wizard</span>
+                                </button>
+                                <button style="float:left" id="btnClipboard" class="button is-primary ml-1 mr-1 is-size-7">
+                                    <i class="fa fa-clipboard mr-1" aria-hidden="true"></i>
+                                    <span>Copy to Clipboard </span>
+                                </button>
+                                <button style="float:left" id="btnClipboardClose" class="button is-primary ml-1 mr-1 is-size-7">
+                                    <i class="fa fa-clipboard mr-1" aria-hidden="true"></i>
+                                    Copy to Clipboard & Close </span>
+                                </button>
+                                <button style="float:right" id="btnClose" class="button is-danger ml-1 mr-1 is-size-7">
+                                    <i class="fa fa-minus mr-1" aria-hidden="true"></i>
+                                    <span>Hide </span>
+                                </button>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="tabcontent">
+                    <table class="">
+                        <tr>
+                            <td class="draggable" style="width:20%">
+                                <i class="fa fa-bookmark-o pl-3 pr-2" aria-hidden="true"></i>
+                                <span class="">Templates:</span>
+                            </td>
+                            <td>
+                                <textarea class="textarea m-1 tah-400" id="txtTemplate" row="15" type="text"></textarea>
+                                <div class="pt-1 pb-2 is-size-7">Use ## to start a new template and use {{content}} for content from clipboard</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="draggable" style="width:20%">
+                                <i class="fa fa-key pl-3 pr-2" aria-hidden="true"></i>
+                                <span class="">Secret Key:</span>
+                            </td>
+                            <td><input type="text" id="txtSecretKey" class="input m-1" /></td>
+                        </tr>
+                        <tr>
+                            <td class="draggable" style="width:20%">
+                                <i class="fa fa-cube pl-3 pr-2" aria-hidden="true"></i>
+                                <span class="">Model:</span>
+                            </td>
+                            <td><input type="text" id="txtModel" value="gpt-3.5-turbo" class="input m-1" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"  class="draggable">
+                                <button id="jkt_btnSave" class="button is-primary ml-3 is-size-7">
+                                    <i class="fa fa-floppy-o mr-1" aria-hidden="true"></i>
+                                    Save
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
-<script>
-    const Store = require('electron-store');
-    const store = new Store();
-    var btnGenerate = document.getElementById('btnGenerate');
-    var btnClose = document.getElementById('btnClose');
-    var btnClipboard = document.getElementById('btnClipboard');
-    var btnSave = document.getElementById('jkt_btnSave');
-    var btnClipboardClose = document.getElementById('btnClipboardClose');
-    var status = document.getElementById('status');
+        <script>
+            const Store = require('electron-store');
+            const store = new Store();
+            var btnGenerate = document.getElementById('btnGenerate');
+            var btnClose = document.getElementById('btnClose');
+            var btnClipboard = document.getElementById('btnClipboard');
+            var btnSave = document.getElementById('jkt_btnSave');
+            var btnClipboardClose = document.getElementById('btnClipboardClose');
+            var status = document.getElementById('status');
 
-
-    var txtPrompt = document.getElementById('txtPrompt');
-    var txtOutput = document.getElementById('txtOutput');
-    var dialog = document.getElementById('appDialog');
+            var txtPrompt = document.getElementById('txtPrompt');
+            var txtOutput = document.getElementById('txtOutput');
+            var dialog = document.getElementById('appDialog');
 
 
-    var txtSecretKey = document.getElementById('txtSecretKey');
-    var txtModel = document.getElementById('txtModel');
-    var txtTemplate = document.getElementById('txtTemplate');
-    var txtTemplateSelected = document.getElementById('txtTemplateSelected');
-    var divNotification = document.getElementById('divNotification');
-    let selectedText = "";
-    let templates = [];
+            var txtSecretKey = document.getElementById('txtSecretKey');
+            var txtModel = document.getElementById('txtModel');
+            var txtTemplate = document.getElementById('txtTemplate');
+            var txtTemplateSelected = document.getElementById('txtTemplateSelected');
+            var divNotification = document.getElementById('divNotification');
+            let selectedText = "";
+            let templates = [];
 
-    txtTemplateSelected.focus();
+            txtTemplateSelected.focus();
 
 
-    let defaultTemplate =
-        `## Proof read
-Proof read the following and list down the changes have been made:
-{{content}}
+            let defaultTemplate =
+                `## Proof read
+        Proof read the following and list down the changes have been made:
+        {{content}}
 
-## Rewrite
-Rewrite the following:
-{{content}}
+        ## Rewrite
+        Rewrite the following:
+        {{content}}
 
-## Summarize
-Please summarize the following:
-{{content}}
+        ## Summarize
+        Please summarize the following:
+        {{content}}
 
-## Twitter reply
-Please write a tweet reply to the following:
-{{content}}
+        ## Twitter reply
+        Please write a tweet reply to the following:
+        {{content}}
 
-## Twitter reply with 
-Please write a tweet reply to the following requirement:
-- Use witty tune
-- 
+        ## Twitter reply with 
+        Please write a tweet reply to the following requirement:
+        - Use humorous tone
+        - 
 
-The content to reply to:
-====
-{{content}}
-====
-`;
+        The content to reply to:
+        ====
+        {{content}}
+        ====
+        `;
 
-    let tabs = Array.from(document.querySelector(".tab-container").querySelectorAll(".tab"));
-    let tabContents = Array.from(document.querySelector(".tabcontent-container").querySelectorAll(".tabcontent"));
+            let tabs = Array.from(document.querySelector(".tab-container").querySelectorAll(".tab"));
+            let tabContents = Array.from(document.querySelector(".tabcontent-container").querySelectorAll(".tabcontent"));
 
-    tabs.forEach((tab) => {
-        tab.addEventListener('click', function (obj) {
-            console.log(obj);
-            let index = 0;
-            tabs.forEach((t, i) => {
-                t.classList.remove("is-active");
-                if (t.contains(obj.target)) {
-                    index = i;
+            tabs.forEach((tab) => {
+                tab.addEventListener('click', function (obj) {
+                    console.log(obj);
+                    let index = 0;
+                    tabs.forEach((t, i) => {
+                        t.classList.remove("is-active");
+                        if (t.contains(obj.target)) {
+                            index = i;
+                        }
+                    });
+                    tabs[index].classList.add("is-active");
+
+                    tabContents.forEach((t) => {
+                        t.classList.remove("active");
+                    });
+                    tabContents[index].classList.add("active");
+
+                });
+            });
+
+            btnGenerate.addEventListener('click', () => {
+                if (!txtSecretKey.value) {
+                    alert("Please enter your OpenAI API Key in the `Settings` first");
+                    return;
                 }
+                btnGenerate.disabled = true;
+                console.log(status);
+                status.innerHTML = " - Generating Text...";
+                var payload = {
+                    "model": txtModel.value,
+                    "messages": [{ "role": "user", "content": txtPrompt.value }]
+                };
+
+                fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + txtSecretKey.value
+                    },
+                    body: JSON.stringify(payload)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        let delimitor = "\n--------------\n"
+                        if (txtOutput.value == '') delimitor = '';
+                        txtOutput.value = data.choices[0].message.content + delimitor + txtOutput.value;
+                        status.innerHTML = "";
+                        btnGenerate.disabled = false;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        status.innerHTML = "";
+                        btnGenerate.disabled = false;
+                    });
             });
-            tabs[index].classList.add("is-active");
 
-            tabContents.forEach((t) => {
-                t.classList.remove("active");
+
+            btnClose.addEventListener('click', function () {
+                window.close();
             });
-            tabContents[index].classList.add("active");
 
-        });
-    });
-
-    btnGenerate.addEventListener('click', () => {
-        if (!txtSecretKey.value) {
-            alert("Please enter your OpenAI API Key in the `Settings` first");
-            return;
-        }
-        btnGenerate.disabled = true;
-        console.log(status);
-        status.innerHTML = " - Generating Text...";
-        var payload = {
-            "model": txtModel.value,
-            "messages": [{ "role": "user", "content": txtPrompt.value }]
-        };
-
-        fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + txtSecretKey.value
-            },
-            body: JSON.stringify(payload)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                let delimitor = "\n--------------\n"
-                if (txtOutput.value == '') delimitor = '';
-                txtOutput.value = data.choices[0].message.content + delimitor + txtOutput.value;
-                status.innerHTML = "";
-                btnGenerate.disabled = false;
-            })
-            .catch(error => {
-                console.error(error);
-                status.innerHTML = "";
-                btnGenerate.disabled = false;
+            btnClipboard.addEventListener('click', function () {
+                txtOutput.select();
+                document.execCommand('copy');
             });
-    });
+
+            btnClipboardClose.addEventListener('click', function () {
+                txtOutput.select();
+                document.execCommand('copy');
+                setTimeout(() => {
+                    window.close();
+                })
+
+            });
+
+            btnSave.addEventListener('click', function () {
+                store.set('secretKey', txtSecretKey.value);
+                store.set('model', txtModel.value);
+                store.set('template', txtTemplate.value);
+                refreshTemplateList(txtTemplate.value);
+                showMessage("success", "Settings have been saved", 1000);
+            });
+
+            txtTemplateSelected.addEventListener('change', function (evt) {
+                console.log(evt.target);
+                refreshPropmt();
+            });
 
 
-    btnClose.addEventListener('click', function () {
-        window.close();
-    });
+            let showMessage = (status, msg, timeout = 3000) => {
+                const n = document.createElement("div");
+                n.innerHTML = `<div class="notification is-${status} notification-border">
+                    ${msg}
+                </div>`
 
-    btnClipboard.addEventListener('click', function () {
-        txtOutput.select();
-        document.execCommand('copy');
-    });
+                divNotification.append(n);
 
-    btnClipboardClose.addEventListener('click', function () {
-        txtOutput.select();
-        document.execCommand('copy');
-        setTimeout(() => {
-            window.close();
-        })
+                n.addEventListener("click", function () {
+                    n.remove();
+                })
 
-    });
+                setTimeout(() => {
+                    n.remove();
+                }, timeout);
+            }
 
-    btnSave.addEventListener('click', function () {
-        store.set('secretKey', txtSecretKey.value);
-        store.set('model', txtModel.value);
-        store.set('template', txtTemplate.value);
-        refreshTemplateList(txtTemplate.value);
-        showMessage("success", "Settings have been saved", 1000);
-    });
-
-    txtTemplateSelected.addEventListener('change', function (evt) {
-        console.log(evt.target);
-        refreshPropmt();
-    });
-
-
-    let showMessage = (status, msg, timeout = 3000) => {
-        const n = document.createElement("div");
-        n.innerHTML = `<div class="notification is-${status} notification-border">
-            ${msg}
-        </div>`
-
-        divNotification.append(n);
-
-        n.addEventListener("click", function () {
-            n.remove();
-        })
-
-        setTimeout(() => {
-            n.remove();
-        }, timeout);
-    }
-
-    let processTextIntoArrayOfObjects = (text) => {
-        const lines = text.split('\n'); // Split the text into lines
-        const objects = [];
-        let currentObject = null;
-        for (let i = 0; i < lines.length; i++) {
-            const line = lines[i].trim();
-            if (line.startsWith('##')) {
+            let processTextIntoArrayOfObjects = (text) => {
+                const lines = text.split('\n'); // Split the text into lines
+                const objects = [];
+                let currentObject = null;
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (line.startsWith('##')) {
+                        if (currentObject) {
+                            objects.push(currentObject);
+                        }
+                        currentObject = { title: line.slice(2).trim(), content: '' };
+                    } else if (currentObject) {
+                        currentObject.content += line + '\n';
+                    }
+                }
                 if (currentObject) {
                     objects.push(currentObject);
                 }
-                currentObject = { title: line.slice(2).trim(), content: '' };
-            } else if (currentObject) {
-                currentObject.content += line + '\n';
+                return objects;
             }
-        }
-        if (currentObject) {
-            objects.push(currentObject);
-        }
-        return objects;
-    }
 
-    let refreshPropmt = () => {
-        let t = templates[parseInt(txtTemplateSelected.selectedOptions[0].dataset.index)].content;
-        txtPrompt.value = t.replace("{{content}}", selectedText);
-    };
+            let refreshPropmt = () => {
+                let t = templates[parseInt(txtTemplateSelected.selectedOptions[0].dataset.index)].content;
+                txtPrompt.value = t.replace("{{content}}", selectedText);
+            };
 
-    let loadData = () => {
-        try {
-            txtTemplate.value = store.get('template') || defaultTemplate;
-            txtSecretKey.value = store.get('secretKey') || "";
-            txtModel.value = store.get('model') || "gpt-3.5-turbo";
-            refreshTemplateList(txtTemplate.value);
-            txtPrompt.value = templates[0].content.replace("{{content}}", selectedText);
-        } catch (ex) {
-            console.log(ex);
-        }
-
-    }
-
-    let refreshTemplateList = (text) => {
-        // Split the text using the delimiter "#####"
-        const items = processTextIntoArrayOfObjects(text);
-        console.log(items);
-        templates = items;
-        // Append each item to the dropdown
-        txtTemplateSelected.innerHTML = '';
-        items.forEach((item, index) => {
-            console.log(item);
-            console.log(item.title);
-            const option = document.createElement("option");
-            option.text = item.title;
-            option.dataset.index = index;
-            txtTemplateSelected.add(option);
-        });
-    };
-
-
-    loadData();
-
-</script>
-
-<script>
-    const util = require('util');
-    const exec = util.promisify(require('child_process').exec);
-    async function getSelectedTextLinux() {
-        try {
-            const { stdout, stderr } = await exec('xsel -o');
-            if (stderr) {
-                console.error(`Error copying selected text: ${stderr}`);
-                return;
-            }
-            console.log(`Selected text: ${stdout}`);
-            return stdout;
-        } catch (err) {
-            console.error(`Error copying selected text: ${err}`);
-        }
-        return "";
-    }
-
-    document.addEventListener('DOMContentLoaded', async()=>{
-        if(process.platform === "linux"){
-            selectedText = await getSelectedTextLinux();
-            refreshPropmt();
-        }else{
-            showMessage("danger",`Platform ${process.platform} not supported`,2000);
-        }
-
-    });    
-
-</script>
-
-<script>
-    const { ipcRenderer } = require('electron');
-    let lh = 0;
-    setInterval(() => {
-        let styles = getComputedStyle(dialog);
-        if (lh == parseInt(styles.height)) return;
-        ipcRenderer.send('message-from-renderer',
-            JSON.stringify(
-                {
-                    cmd: "resize",
-                    width: parseInt(styles.width),
-                    height: parseInt(styles.height)
+            let loadData = () => {
+                try {
+                    txtTemplate.value = store.get('template') || defaultTemplate;
+                    txtSecretKey.value = store.get('secretKey') || "";
+                    txtModel.value = store.get('model') || "gpt-3.5-turbo";
+                    refreshTemplateList(txtTemplate.value);
+                    txtPrompt.value = templates[0].content.replace("{{content}}", selectedText);
+                } catch (ex) {
+                    console.log(ex);
                 }
-            ));
 
-        lh = parseInt(styles.height);
-    }, 50);
+            }
 
-</script>
+            let refreshTemplateList = (text) => {
+                // Split the text using the delimiter "#####"
+                const items = processTextIntoArrayOfObjects(text);
+                console.log(items);
+                templates = items;
+                // Append each item to the dropdown
+                txtTemplateSelected.innerHTML = '';
+                items.forEach((item, index) => {
+                    console.log(item);
+                    console.log(item.title);
+                    const option = document.createElement("option");
+                    option.text = item.title;
+                    option.dataset.index = index;
+                    txtTemplateSelected.add(option);
+                });
+            };
+
+
+            loadData();
+
+        </script>
+
+        <script>
+            const util = require('util');
+            const exec = util.promisify(require('child_process').exec);
+            async function getSelectedTextLinux() {
+                try {
+                    const { stdout, stderr } = await exec('xsel -o');
+                    if (stderr) {
+                        console.error(`Error copying selected text: ${stderr}`);
+                        return;
+                    }
+                    console.log(`Selected text: ${stdout}`);
+                    return stdout;
+                } catch (err) {
+                    console.error(`Error copying selected text: ${err}`);
+                }
+                return "";
+            }
+
+            document.addEventListener('DOMContentLoaded', async()=>{
+                if(process.platform === "linux"){
+                    selectedText = await getSelectedTextLinux();
+                    refreshPropmt();
+                }else{
+                    showMessage("danger",`Platform ${process.platform} not supported`,2000);
+                }
+
+            });    
+
+        </script>
+
+        <script>
+            const { ipcRenderer } = require('electron');
+            let lh = 0;
+            setInterval(() => {
+                let styles = getComputedStyle(dialog);
+                if (lh == parseInt(styles.height)) return;
+                ipcRenderer.send('message-from-renderer',
+                    JSON.stringify(
+                        {
+                            cmd: "resize",
+                            width: parseInt(styles.width),
+                            height: parseInt(styles.height)
+                        }
+                    ));
+
+                lh = parseInt(styles.height);
+            }, 50);
+
+        </script>
+    </body>
+</html>    

@@ -1,11 +1,11 @@
-const { app, BrowserWindow, Tray, nativeImage, globalShortcut,ipcMain } = require('electron');
+const { app, BrowserWindow, Tray, nativeImage,Menu, globalShortcut,ipcMain } = require('electron');
 const path = require('path');
 const Store = require('electron-store');
 const store = new Store();
 
 let mainWindow;
 let tray;
-let copiedText ="";
+let shouldQuit = false;
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 800,
@@ -16,8 +16,9 @@ function createWindow() {
             contextIsolation: false,
             enableRemoteModule: true,
         },
-        frame: true,
-        transparent: true,
+        frame: false,
+        //transparent: true, 
+        resizable: false,
         icon: __dirname + '/icons/icon.png'
     });
     mainWindow.setMenuBarVisibility(false);
@@ -25,6 +26,7 @@ function createWindow() {
 
     mainWindow.loadFile('index.html');
     mainWindow.hide();
+    mainWindow.show();
 
     mainWindow.on('closed', () => {
         mainWindow = null;
@@ -34,29 +36,51 @@ function createWindow() {
         mainWindow.reload();
         await new Promise(r => setTimeout(r, 100));
         mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
-
     });
 
     mainWindow.on('close', event=>{
-        event.preventDefault(); 
-        mainWindow.hide();
+        if(shouldQuit==false){
+            event.preventDefault(); 
+            mainWindow.hide();
+        }
     });
 
     ipcMain.on('message-from-renderer', (event, arg) => {
         //console.log(arg);
         let request = JSON.parse(arg);
+
         if(request.cmd='resize'){
             mainWindow.resizable = true;
-            mainWindow.setSize(mainWindow.getSize()[0], request.height+15);
+            mainWindow.setContentSize(mainWindow.getSize()[0], request.height);
             mainWindow.resizable = false;
         }
     });    
       
 }
 
+if(process.platform === "linux") {
+    app.commandLine.appendSwitch('enable-transparent-visuals');
+    app.disableHardwareAcceleration();
+}      
+
 app.whenReady().then(() => {
     tray = new Tray(__dirname + '/icons/icon.png');
-    tray.setToolTip('WriteZebra');
+    
+    const contextMenu = Menu.buildFromTemplate([
+        { label: 'Show', click(item, focusedWindow){
+                mainWindow.show();
+            } 
+        },
+        { label: 'Quit Application', click(item, focusedWindow){
+                shouldQuit = true;
+                app.quit();
+            }
+        },
+
+      ])
+      tray.setToolTip('WriteZebra');
+    tray.setContextMenu(contextMenu)
+
     tray.on('click', () => {
         mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
     });
