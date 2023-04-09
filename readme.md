@@ -8,6 +8,8 @@ Features:
 - Activated by a keyboard shortcut (Ctrl-Shift-K).
 - Runs on Linux and Windows (coming soon).
 
+![Alt text](screenshot.png)
+
 ## 1. Installation
 
 ### Install xsel for Linux

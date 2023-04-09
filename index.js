@@ -47,7 +47,7 @@ function createWindow() {
         let request = JSON.parse(arg);
         if(request.cmd='resize'){
             mainWindow.resizable = true;
-            mainWindow.setSize(mainWindow.getSize()[0], request.height+30);
+            mainWindow.setSize(mainWindow.getSize()[0], request.height+15);
             mainWindow.resizable = false;
         }
     });    
