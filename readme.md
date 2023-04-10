@@ -8,7 +8,7 @@ Features:
 - Customizable templates for proofreading, summarizing, and rewriting emails, among other things.
 - Runs on Linux and Windows (coming soon).
 
-![Alt text](screenshot.png)
+<img src="screenshot.png" width="600px">
 
 ## 1. Installation
 
