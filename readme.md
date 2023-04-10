@@ -12,14 +12,7 @@ Features:
 
 ## 1. Installation
 
-### Install xsel for Linux
-xsel is a command-line tool for working with the X clipboard in Linux. It allows you to manipulate the clipboard contents from the command line.
 
-To install xsel, run the following command:
-
-```
-sudo apt install xsel
-```
 
 
 ### Install zlib1g-dev and libpng-dev
@@ -36,6 +29,23 @@ sudo apt install libx11-dev libxtst-dev
 npm install
 ```
 
+### For Robotjs(Optional)
+https://www.electronjs.org/docs/latest/tutorial/using-native-node-modules
+```
+npm install --save-dev @electron/rebuild
+
+# Every time you run "npm install", run this:
+./node_modules/.bin/electron-rebuild
+```
+
+### Install xsel for Linux(Optional)
+xsel is a command-line tool for working with the X clipboard in Linux. It allows you to manipulate the clipboard contents from the command line.
+
+To install xsel, run the following command:
+
+```
+sudo apt install xsel
+```
 
 ## 2. To start the project
 

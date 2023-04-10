@@ -477,37 +477,18 @@
         </script>
 
         <script>
-            const util = require('util');
-            const exec = util.promisify(require('child_process').exec);
-            async function getSelectedTextLinux() {
-                try {
-                    const { stdout, stderr } = await exec('xsel -o');
-                    if (stderr) {
-                        console.error(`Error copying selected text: ${stderr}`);
-                        return;
-                    }
-                    console.log(`Selected text: ${stdout}`);
-                    return stdout;
-                } catch (err) {
-                    console.error(`Error copying selected text: ${err}`);
-                }
-                return "";
-            }
-
             document.addEventListener('DOMContentLoaded', async()=>{
-                if(process.platform === "linux"){
-                    selectedText = await getSelectedTextLinux();
-                    refreshPropmt();
-                }else{
-                    showMessage("danger",`Platform ${process.platform} not supported`,2000);
-                }
-
+                getSelectedText();
             });    
-
         </script>
 
         <script>
             const { ipcRenderer } = require('electron');
+
+            function getSelectedText(){
+                ipcRenderer.send('message-from-renderer', `{"cmd":"getSelectedText"}`);
+            }
+
             let lh = 0;
             setInterval(() => {
                 let styles = getComputedStyle(dialog);
@@ -523,6 +504,15 @@
 
                 lh = parseInt(styles.height);
             }, 50);
+
+            ipcRenderer.on('message-from-main', (event, arg) => {
+                let response = JSON.parse(arg);
+                console.log('Message from main:'+ arg);
+                if(response.cmd=="getSelectedText"){
+                    selectedText = response.result;
+                    refreshPropmt();
+                }
+            });
 
         </script>
     </body>
