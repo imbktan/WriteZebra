@@ -2,10 +2,10 @@
 WriteZebra is a simple and open-source launcher for Linux that integrates with OpenAI's GPT. It enables users to quickly proofread, summarize, and reply using a hotkey for the selected text in the current active window.
 
 Features:
-- Unlike Chrome plug-ins, WriteZebra works across all apps, such as browsers and mail clients.
-- Customizable templates for proofreading, summarizing, and rewriting emails, among other things.
 - Auto-copies the selected text.
 - Activated by a keyboard shortcut (Ctrl-Shift-K).
+- Unlike Chrome plug-ins, WriteZebra works across all apps, such as browsers and mail clients.
+- Customizable templates for proofreading, summarizing, and rewriting emails, among other things.
 - Runs on Linux and Windows (coming soon).
 
 ![Alt text](screenshot.png)

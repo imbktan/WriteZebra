@@ -24,14 +24,14 @@
                 -webkit-app-region: drag;
             }
 
-            .non-draggable, input, button{
+            .non-draggable, input, textarea, button, select,.select{
                 -webkit-user-select: auto!important;
                 user-select:auto!important;                
                 -webkit-app-region: no-drag!important;
             }
 
 
-            ::-webkit-scrollbar {
+            html::-webkit-scrollbar {
                 display: none;
             }    
 
@@ -62,6 +62,7 @@
 
             .tabcontent table {
                 width: calc(100% - 20px);
+                padding-top: 10px;
             }
 
             .tabcontent td {
@@ -142,7 +143,7 @@
             </div>
 
             <div class="tabcontent-container ml-2 mr-2 pb-2 theme-background-color-contrast" >
-                <div class="tabcontent active">
+                <div class="tabcontent draggable active">
                     <table class="">
                         <tr>
                             <td class="draggable" style="width:17%">
@@ -196,7 +197,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="tabcontent">
+                <div class="tabcontent draggable">
                     <table class="">
                         <tr>
                             <td class="draggable" style="width:20%">
@@ -206,6 +207,11 @@
                             <td>
                                 <textarea class="textarea m-1 tah-400" id="txtTemplate" row="15" type="text"></textarea>
                                 <div class="pt-1 pb-2 is-size-7">Use ## to start a new template and use {{content}} for content from clipboard</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h2 class="pt-4 pl-3 is-size-5">OpenAI</h2>
                             </td>
                         </tr>
                         <tr>
@@ -223,11 +229,16 @@
                             <td><input type="text" id="txtModel" value="gpt-3.5-turbo" class="input m-1" /></td>
                         </tr>
                         <tr>
-                            <td colspan="2"  class="draggable">
-                                <button id="jkt_btnSave" class="button is-primary ml-3 is-size-7">
+                            <td colspan="2"  class="draggable pt-2 pb-2">
+                                <button style="float:left" id="btnSave" class="button is-primary ml-3 is-size-7">
                                     <i class="fa fa-floppy-o mr-1" aria-hidden="true"></i>
                                     Save
                                 </button>
+
+                                <button style="float:right" id="btnClose2" class="button is-danger ml-1 mr-1 is-size-7">
+                                    <i class="fa fa-minus mr-1" aria-hidden="true"></i>
+                                    <span>Hide </span>
+                                </button>                                
                             </td>
                         </tr>
                     </table>
@@ -240,8 +251,9 @@
             const store = new Store();
             var btnGenerate = document.getElementById('btnGenerate');
             var btnClose = document.getElementById('btnClose');
+            var btnClose2 = document.getElementById('btnClose2');
             var btnClipboard = document.getElementById('btnClipboard');
-            var btnSave = document.getElementById('jkt_btnSave');
+            var btnSave = document.getElementById('btnSave');
             var btnClipboardClose = document.getElementById('btnClipboardClose');
             var status = document.getElementById('status');
 
@@ -354,6 +366,10 @@
                 window.close();
             });
 
+            btnClose2.addEventListener('click', function () {
+                window.close();
+            });
+
             btnClipboard.addEventListener('click', function () {
                 txtOutput.select();
                 document.execCommand('copy');
@@ -369,8 +385,8 @@
             });
 
             btnSave.addEventListener('click', function () {
-                store.set('secretKey', txtSecretKey.value);
-                store.set('model', txtModel.value);
+                store.set('secretKeyOpenAI', txtSecretKey.value);
+                store.set('modelOpenAI', txtModel.value);
                 store.set('template', txtTemplate.value);
                 refreshTemplateList(txtTemplate.value);
                 showMessage("success", "Settings have been saved", 1000);
@@ -428,8 +444,8 @@
             let loadData = () => {
                 try {
                     txtTemplate.value = store.get('template') || defaultTemplate;
-                    txtSecretKey.value = store.get('secretKey') || "";
-                    txtModel.value = store.get('model') || "gpt-3.5-turbo";
+                    txtSecretKey.value = store.get('secretKeyOpenAI') || "";
+                    txtModel.value = store.get('modelOpenAI') || "gpt-3.5-turbo";
                     refreshTemplateList(txtTemplate.value);
                     txtPrompt.value = templates[0].content.replace("{{content}}", selectedText);
                 } catch (ex) {
