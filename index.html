@@ -397,6 +397,13 @@
                 refreshPropmt();
             });
 
+            document.addEventListener("keydown", event => {
+                switch (event.key) {
+                    case "Escape":
+                        window.close();
+                        break;
+                }
+            });
 
             let showMessage = (status, msg, timeout = 3000) => {
                 const n = document.createElement("div");
