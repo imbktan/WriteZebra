@@ -147,7 +147,8 @@ async function getSelectedTextXSel() {
 
 async function getSelectedText(){
     const robot = require('robotjs');
-    robot.keyTap('c', ['control']);
+    await new Promise(r => setTimeout(r, 300));
+    robot.keyTap('c', process.platform==='darwin' ? 'command' : 'control');
     const selectedText = clipboard.readText("selection");
     return selectedText;
 }
